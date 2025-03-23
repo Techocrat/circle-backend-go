@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/Techocrat/circle-backend-go/database"
+	"github.com/Techocrat/circle-backend-go/internal/models"
 	"github.com/Techocrat/circle-backend-go/internal/routes"
 	"github.com/gin-gonic/gin"
 )
@@ -12,6 +13,10 @@ import (
 func main() {
 
 	database.Connect()
+
+	if err := database.DB.AutoMigrate(&models.User{}); err != nil {
+		log.Fatalf("DB migration failed: %v", err)
+	}
 
 	r := gin.Default()
 

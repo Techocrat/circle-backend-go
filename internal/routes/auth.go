@@ -1,14 +1,13 @@
 package routes
 
 import (
-    "github.com/gin-gonic/gin"
-    // "github.com/Techocrat/circle/internal/handlers"
+	"github.com/Techocrat/circle-backend-go/internal/auth"
+	"github.com/gin-gonic/gin"
 )
 
 func AuthRoutes(rg *gin.RouterGroup) {
-    // auth := rg.Group("/auth")
-    // {
-    //     // auth.POST("/signup", handlers.SignUp)
-    //     // auth.POST("/signin", handlers.SignIn)
-    // }
+	authGroup := rg.Group("/auth")
+	{
+		authGroup.POST("/signup", auth.SignUp)
+	}
 }
