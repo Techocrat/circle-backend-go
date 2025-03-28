@@ -14,7 +14,7 @@ func main() {
 
 	database.Connect()
 
-	if err := database.DB.AutoMigrate(&models.User{}); err != nil {
+	if err := database.DB.AutoMigrate(&models.User{}, &models.Post{}); err != nil {
 		log.Fatalf("DB migration failed: %v", err)
 	}
 
@@ -23,6 +23,7 @@ func main() {
 	api := r.Group("/api/v1")
 	{
 		routes.AuthRoutes(api)
+		routes.PostRoutes(api)
 	}
 
 	port := os.Getenv("PORT")
