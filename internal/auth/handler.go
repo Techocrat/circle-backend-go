@@ -13,13 +13,13 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	token, err := SignUpUser(req)
+	err := SignUpUser(req)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, AuthResponse{Token: token})
+	c.JSON(http.StatusCreated, gin.H{"message": "User created succssfully!"})
 }
 
 func SignIn(c *gin.Context) {

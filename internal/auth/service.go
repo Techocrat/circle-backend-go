@@ -8,18 +8,18 @@ import (
 	"github.com/Techocrat/circle-backend-go/internal/models"
 )
 
-func SignUpUser(req SignUpRequest) (string, error) {
+func SignUpUser(req SignUpRequest) error {
 	// Check if user already exists
 	var existing models.User
 	result := database.DB.Where("email = ?", req.Email).First(&existing)
 	if result.Error == nil {
-		return "", errors.New("user with this email already exists")
+		return errors.New("user with this email already exists")
 	}
 
 	// Hash password
 	hashed, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return "", err
+		return err
 	}
 
 	// Create user
@@ -30,11 +30,10 @@ func SignUpUser(req SignUpRequest) (string, error) {
 	}
 
 	if err := database.DB.Create(&user).Error; err != nil {
-		return "", err
+		return err
 	}
 
-	// Generate token
-	return GenerateJWT(user.ID)
+	return nil
 }
 
 func SignInUser(req SignInRequest) (string, error) {
