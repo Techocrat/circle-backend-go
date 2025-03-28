@@ -9,5 +9,6 @@ func AuthRoutes(rg *gin.RouterGroup) {
 	authGroup := rg.Group("/auth")
 	{
 		authGroup.POST("/signup", auth.SignUp)
+		authGroup.POST("/signin", auth.SignIn)
 	}
 }

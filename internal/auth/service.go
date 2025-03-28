@@ -36,3 +36,22 @@ func SignUpUser(req SignUpRequest) (string, error) {
 	// Generate token
 	return GenerateJWT(user.ID)
 }
+
+func SignInUser(req SignInRequest) (string, error) {
+	var user models.User
+	err := database.DB.Where("email = ? OR username = ?", req.Identifier, req.Identifier).First(&user).Error
+	if err != nil {
+		return "", errors.New("user not found")
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
+		return "", errors.New("invalid password")
+	}
+
+	token, err := GenerateJWT(user.ID)
+	if err != nil {
+		return "", err
+	}
+
+	return token, nil
+}

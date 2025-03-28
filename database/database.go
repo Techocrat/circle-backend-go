@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -23,7 +22,7 @@ func Connect() {
 	var db *gorm.DB
 	var err error
 
-	maxAttempts := 10
+	maxAttempts := 3
 	for i := 1; i <= maxAttempts; i++ {
 		db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 		if err == nil {
@@ -32,7 +31,6 @@ func Connect() {
 		}
 
 		log.Printf("⏳ Attempt %d: Failed to connect to DB, retrying in 2s...", i)
-		time.Sleep(2 * time.Second)
 	}
 
 	if err != nil {
