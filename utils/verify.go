@@ -15,6 +15,10 @@ type Claims struct {
 func VerifyJWT(tokenStr string) (*Claims, error) {
 	secretKey := os.Getenv("JWT_SECRET")
 
+	if secretKey == "" {
+		return nil, errors.New("JWT_SECRET environment variable is not set")
+	}
+
 	// Parse the token
 	token, err := jwt.ParseWithClaims(tokenStr, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		// Check the signing method
